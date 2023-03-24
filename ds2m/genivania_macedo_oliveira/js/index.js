@@ -1,10 +1,8 @@
 'use strict'
 
-import { contatos } from "https://fernandoleonid.github.io/whatsApp-senai-1-2023/recursos/contatos.js"
+// import { contatos } from "https://fernandoleonid.github.io/whatsApp-senai-1-2023/recursos/contatos.js"
 
 let i = 0
-
-
 
 const criarContato = (contato) => {
     const contact = document.createElement('button')
@@ -31,7 +29,13 @@ const criarContato = (contato) => {
         return contact
 }
 
-const carregarContatos = () => {
+const carregarContatos = async () => {
+
+    const url = `http://localhost:8080/v1/whatsapp/mensagem?id=3`
+    const response = await fetch(url)
+    const contatos = await response.json()
+    // return dadosConversa
+
     const container = document.getElementById('container')
     const contacts = contatos.map(criarContato)
 
@@ -43,7 +47,6 @@ const carregarContatos = () => {
             
             function puxarContatoMain() {
                 document.getElementById('main').style.display = "grid";
-
 
                 const mainHeader = document.createElement('div')
                 mainHeader.classList.add('main__header')
@@ -81,7 +84,6 @@ const carregarContatos = () => {
                 elipse.classList.add('fas')
                 elipse.classList.add('fa-ellipsis-v')
 
-
                 containerMain.append(contactName, descriptionMain)
                 Iconvoltar.append(voltar)
                 mainIcons.append(lente, elipse)
@@ -94,13 +96,11 @@ const carregarContatos = () => {
                 //Responsividade
                 document.getElementById('header').classList.add('display__none')
 
-
                 Iconvoltar.addEventListener('click', function() {
                     console.log("Funcionou?");
 
                     document.getElementById('header').classList.remove('display__none')
                     document.getElementById('main').style.display = 'none'
-
                 })
             }
 
@@ -123,14 +123,12 @@ const carregarContatos = () => {
                     else
                         mainMensagemHora.textContent = contatos[contact.id].messages[cont].time
 
-
                     const mainMensagemContato = document.createElement('div')
 
                     if (contatos[contact.id].messages[cont].sender != "me")
                         mainMensagemContato.classList.add('main__mensagem__contact')
                     else
                         mainMensagemContato.classList.add('main__mensagem__contact__end')
-
 
                     const mainMensagem = document.createElement('div')
                     mainMensagem.classList.add('main__mensagem')
@@ -140,47 +138,17 @@ const carregarContatos = () => {
                     arrayMensagem.push(mainMensagemContato)
                     mainMensagem.append(...arrayMensagem)
 
-
                     const offsideMensagem = document.getElementById('offside__message')
 
                     offsideMensagem.replaceChildren(mainMensagem)
 
-
-
                     cont += 1
-
                 }
-
-
             }
-
             puxarContatoMain()
             puxarMensagemMain()
-
         }
-
-
-
     });
-
-}
-
-const lightTheme = {
-    '--primary__color': '#26CE4B',
-    '--font__color': '#fff',
-    '--backContact__color': '#98D1A4',
-    '--backImage': 'url(../img/dia.jpg)',
-    '--backFinder': '#62B774',
-
-}
-
-const darkTheme = {
-    '--primary__color': '#263238',
-    '--font__color': '#b0bec5',
-    '--backContact__color': '#455a64',
-    '--backImage': 'url(../img/noite.jpg)',
-    '--backFinder': '#37474f',
-
 }
 
 const chk = document.getElementById('chk')
@@ -191,7 +159,6 @@ chk.addEventListener('change', function() {
 
     isChecked ? changeTheme(lightTheme) : changeTheme(darkTheme)
 
-
 })
 
 function changeTheme(theme) {
@@ -199,12 +166,10 @@ function changeTheme(theme) {
     for (let prop in theme) {
         changeProperty(prop, theme[prop])
     }
-
 }
 
 function changeProperty(property, value) {
     rootElement.style.setProperty(property, value)
-
 }
 
 carregarContatos()
